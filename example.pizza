@@ -1,0 +1,32 @@
+
+catalog {
+    crusts: traditional, thin, thick
+    sauces: tomato, alfredo, pesto
+    cheeses: mozzarella, cheddar
+    toppings: pepperoni, sausage, ham, mushrooms
+    drinks: sprite, water, lemonade
+}
+
+order {
+    customer: ""
+    contact: ""
+    status: pending
+
+    items {
+        2 pizza {
+            crust: thin,
+            sauce: tomato,
+            cheese: mozzarella,
+            toppings: pepperoni, mushrooms
+        }
+
+        1 pizza {
+            crust: traditional,
+            sauce: alfredo,
+            cheese: cheddar
+        }
+
+        3 drink sprite
+        1 drink water
+    }
+}

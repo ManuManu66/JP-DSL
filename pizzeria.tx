@@ -1,0 +1,62 @@
+
+Program:
+    declarations+=Declaration
+;
+
+Declaration:
+    OrderDecl | CatalogDecl
+;
+
+OrderDecl:
+    'order' '{'
+        'customer' ':' customer=STRING
+        'contact' ':' contact=STRING
+        'status' ':' status=Status
+        'items' '{'
+            items+=Item
+        '}'
+    '}'
+;
+
+Item:
+    PizzaItem | DrinkItem
+;
+
+PizzaItem:
+    quantity=INT 'pizza' '{'
+        'crust' ':' crust=ID ','
+        'sauce' ':' sauce=ID ','
+        'cheese' ':' cheese=ID
+        toppings=PizzaToppings?
+    '}'
+;
+
+PizzaToppings:
+    ',' 'toppings' ':' toppings+=ID[',']
+;
+
+DrinkItem:
+    quantity=INT 'drink' drink=ID
+;
+
+CatalogDecl:
+    'catalog' '{'
+        'crusts' ':' crusts+=ID[',']
+        'sauces' ':' sauces+=ID[',']
+        'cheeses' ':' cheeses+=ID[',']
+        'toppings' ':' toppings+=ID[',']
+        'drinks' ':' drinks+=ID[',']
+    '}'
+;
+
+Status:
+    'pending'
+    | 'processing'
+    | 'ready'
+    | 'completed'
+    | 'cancelled'
+;
+
+// Custom lexical definitions
+ID: /[a-z][a-z0-9-]*/;
+INT: /[0-9]+/;
