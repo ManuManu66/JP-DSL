@@ -21,12 +21,18 @@
     <ul>
       {% for v in values %}
         <li>
-          {{ v }}
+          <form method="post" class="update-form">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="category" value="{{ category }}">
+            <input type="hidden" name="old_value" value="{{ v }}">
+            <input type="text" name="value" value="{{ v }}">
+            <button type="submit" title="Save new name">Save</button>
+          </form>
           <form method="post" class="inline-form" onsubmit="return confirm('Remove {{ v }} from {{ category }}?');">
             <input type="hidden" name="action" value="remove">
             <input type="hidden" name="category" value="{{ category }}">
             <input type="hidden" name="value" value="{{ v }}">
-            <button type="submit" class="link-button">x</button>
+            <button type="submit" class="link-button" title="Remove">x</button>
           </form>
         </li>
       {% endfor %}

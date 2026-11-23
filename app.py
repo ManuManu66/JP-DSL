@@ -238,6 +238,29 @@ def catalog_view():
                     storage.save_catalog(new_catalog)
                     flash(f"Removed '{value}' from {category}.", "success")
                     return redirect(url_for("catalog_view"))
+        elif action == "update":
+            old_value = (request.form.get("old_value") or "").strip().lower()
+            if old_value not in catalog[category]:
+                errors = [f"'{old_value}' is not in {category}."]
+            elif not value:
+                errors = ["Enter a new name before saving."]
+            elif value == old_value:
+                flash("No changes to save.", "success")
+                return redirect(url_for("catalog_view"))
+            elif value in catalog[category]:
+                errors = [f"'{value}' already exists in {category}."]
+            else:
+                new_catalog = {
+                    **catalog,
+                    category: [
+                        value if v == old_value else v for v in catalog[category]
+                    ],
+                }
+                ok, errors = validate_catalog_data(new_catalog)
+                if ok:
+                    storage.save_catalog(new_catalog)
+                    flash(f"Renamed '{old_value}' to '{value}' in {category}.", "success")
+                    return redirect(url_for("catalog_view"))
 
     return render_template("catalog.html", catalog=catalog, errors=errors)
 
