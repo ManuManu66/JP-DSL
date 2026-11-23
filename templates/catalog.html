@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Catalog (Domain Expert)</h2>
+<p class="hint">
+  This is the only screen where terminal symbols (crusts, sauces, cheeses,
+  toppings, drinks) can be added or removed. Every change is parsed and
+  validated against the grammar before it is saved.
+</p>
+
+{% if errors %}
+  <ul class="errors">
+    {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+<div class="catalog-grid">
+  {% for category, values in catalog.items() %}
+  <div class="catalog-card">
+    <h3>{{ category }}</h3>
+    <ul>
+      {% for v in values %}
+        <li>
+          {{ v }}
+          <form method="post" class="inline-form" onsubmit="return confirm('Remove {{ v }} from {{ category }}?');">
+            <input type="hidden" name="action" value="remove">
+            <input type="hidden" name="category" value="{{ category }}">
+            <input type="hidden" name="value" value="{{ v }}">
+            <button type="submit" class="link-button">x</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+    <form method="post" class="add-form">
+      <input type="hidden" name="action" value="add">
+      <input type="hidden" name="category" value="{{ category }}">
+      <input type="text" name="value" placeholder="new {{ category[:-1] }}" required>
+      <button type="submit">Add</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

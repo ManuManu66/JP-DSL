@@ -1,0 +1,7 @@
+{
+  "crusts": ["traditional", "thin", "thick"],
+  "sauces": ["tomato", "alfredo", "pesto"],
+  "cheeses": ["mozzarella", "cheddar"],
+  "toppings": ["pepperoni", "sausage", "ham", "mushrooms"],
+  "drinks": ["sprite", "water", "lemonade"]
+}

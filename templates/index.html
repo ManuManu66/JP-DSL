@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="toolbar">
+  <a class="button" href="{{ url_for('new_order') }}">+ New order</a>
+</div>
+
+{% if not orders %}
+  <p class="empty">No orders yet.</p>
+{% endif %}
+
+<table class="orders">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Customer</th>
+      <th>Contact</th>
+      <th>Items</th>
+      <th>Status</th>
+      <th>Receptionist</th>
+      <th>Kitchen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr class="status-{{ order.status }}">
+      <td>{{ order.id }}</td>
+      <td>{{ order.customer }}</td>
+      <td>{{ order.contact }}</td>
+      <td>
+        <ul class="items">
+          {% for item in order['items'] %}
+            {% if item.type == "pizza" %}
+              <li>{{ item.quantity }}x pizza ({{ item.crust }}, {{ item.sauce }}, {{ item.cheese }}{% if item.toppings %}, {{ item.toppings | join(", ") }}{% endif %})</li>
+            {% else %}
+              <li>{{ item.quantity }}x drink ({{ item.drink }})</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </td>
+      <td><span class="badge">{{ order.status }}</span></td>
+      <td>
+        {% if order.status == "pending" %}
+          <a href="{{ url_for('edit_order', order_id=order.id) }}">Edit</a>
+          <form method="post" action="{{ url_for('cancel_order', order_id=order.id) }}" onsubmit="return confirm('Cancel this order?');">
+            <button type="submit" class="link-button">Cancel</button>
+          </form>
+        {% else %}
+          <span class="muted">-</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if order.status in status_flow and order.status != status_flow[-1] %}
+          <form method="post" action="{{ url_for('advance_order', order_id=order.id) }}">
+            <button type="submit">Advance &rarr;</button>
+          </form>
+        {% else %}
+          <span class="muted">-</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
