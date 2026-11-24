@@ -38,13 +38,13 @@ Then open http://127.0.0.1:5000 in your browser.
   place where crusts, sauces, cheeses, toppings and drinks can be
   added or removed (CRUD on terminal symbols). Every add/remove is
   re-validated (duplicate names, etc.) before it's saved.
+  **Protected by Domain Expert Login**:
+  - Allowed users: `Luis`, `Manu`, `Thelma`
+  - Password: `pizz@321!`
 
 ## Notes / things you may want to add later
 
-- There's no login - the three screens are just pages, not restricted by
-  user. That matches the 4-week scope we agreed on, but if your professor
-  wants role separation to be enforced (not just implied by the UI), a
-  simple hardcoded password per screen would be a small addition.
+- **Authentication**: Access to the Domain Expert screen (`/catalog`) requires logging in with one of the team member credentials above. The Orders screen remains shared between receptionist and kitchen staff.
 - Removing a catalog item doesn't currently re-check existing orders that
   already used it. For a class project this is an acceptable edge case to
   mention in your write-up rather than solve in code.

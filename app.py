@@ -14,13 +14,31 @@ Everything is persisted as JSON (data/orders.json, data/catalog.json).
 Nothing leaves this machine.
 """
 
-from flask import Flask, render_template, request, redirect, url_for, flash
+from functools import wraps
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 import storage
 from dsl_builder import validate_order_data, validate_catalog_data
 
 app = Flask(__name__)
 app.secret_key = "pizzeria-dsl-dev"  # local-only app, fine to hardcode
+
+DOMAIN_EXPERTS = {
+    "luis": {"name": "Luis", "password": "pizz@321!"},
+    "manu": {"name": "Manu", "password": "pizz@321!"},
+    "thelma": {"name": "Thelma", "password": "pizz@321!"},
+}
+
+
+def domain_expert_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("user") or session.get("role") != "domain_expert":
+            flash("Please log in as a Domain Expert to access the catalog.", "error")
+            next_url = request.url if request.method == "GET" else url_for("catalog_view")
+            return redirect(url_for("login", next=next_url))
+        return f(*args, **kwargs)
+    return decorated_function
 
 MAX_ITEM_ROWS = 8
 MAX_TOPPINGS = 5
@@ -199,9 +217,41 @@ def advance_order(order_id):
     return redirect(url_for("index"))
 
 
+# ----------------------------------------------------------------- auth --
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    next_url = request.args.get("next") or request.form.get("next") or url_for("catalog_view")
+
+    if request.method == "POST":
+        username = (request.form.get("username") or "").strip()
+        password = request.form.get("password") or ""
+
+        expert = DOMAIN_EXPERTS.get(username.lower())
+        if expert and expert["password"] == password:
+            session["user"] = expert["name"]
+            session["role"] = "domain_expert"
+            flash(f"Welcome, {expert['name']}! Logged in as Domain Expert.", "success")
+            return redirect(next_url)
+
+        flash("Invalid username or password.", "error")
+        return render_template("login.html", username=username, next=next_url)
+
+    return render_template("login.html", next=next_url)
+
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    session.pop("role", None)
+    flash("You have been logged out.", "success")
+    return redirect(url_for("index"))
+
+
 # --------------------------------------------------------------- catalog --
 
 @app.route("/catalog", methods=["GET", "POST"])
+@domain_expert_required
 def catalog_view():
     catalog = storage.load_catalog()
     errors = []

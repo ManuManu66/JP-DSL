@@ -6,6 +6,7 @@
   This is the only screen where terminal symbols (crusts, sauces, cheeses,
   toppings, drinks) can be added or removed. Every change is parsed and
   validated against the grammar before it is saved.
+  Logged in as <strong>{{ session.get('user') }}</strong>.
 </p>
 
 {% if errors %}

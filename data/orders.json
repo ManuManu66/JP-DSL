@@ -1,4 +1,80 @@
 {
-  "next_id": 1,
-  "orders": []
+  "next_id": 4,
+  "orders": [
+    {
+      "customer": "Luis Garcia",
+      "contact": "85729551",
+      "status": "completed",
+      "items": [
+        {
+          "type": "pizza",
+          "quantity": 1,
+          "crust": "traditional",
+          "sauce": "tomato",
+          "cheese": "mozzarella",
+          "toppings": [
+            "pepperoni"
+          ]
+        },
+        {
+          "type": "drink",
+          "quantity": 1,
+          "drink": "tea"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "id": 2,
+      "customer": "Manuel Molina",
+      "contact": "86211096",
+      "status": "completed",
+      "items": [
+        {
+          "type": "pizza",
+          "quantity": 3,
+          "crust": "thin",
+          "sauce": "pesto",
+          "cheese": "mozzarella",
+          "toppings": [
+            "sausage",
+            "ham",
+            "mushrooms"
+          ]
+        },
+        {
+          "type": "pizza",
+          "quantity": 2,
+          "crust": "traditional",
+          "sauce": "tomato",
+          "cheese": "mozzarella",
+          "toppings": [
+            "pepperoni",
+            "sausage"
+          ]
+        },
+        {
+          "type": "drink",
+          "quantity": 10,
+          "drink": "sprite"
+        }
+      ]
+    },
+    {
+      "customer": "Sonic",
+      "contact": "2",
+      "status": "cancelled",
+      "items": [
+        {
+          "type": "pizza",
+          "quantity": 1,
+          "crust": "traditional",
+          "sauce": "alfredo",
+          "cheese": "cheddar",
+          "toppings": []
+        }
+      ],
+      "id": 3
+    }
+  ]
 }

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Domain Expert Login</h2>
+<p class="hint">
+  Access to the catalog (adding, renaming, and removing crusts, sauces, cheeses, toppings, and drinks) is restricted to Domain Experts (Luis, Manu, Thelma).
+</p>
+
+<form method="post" action="{{ url_for('login') }}">
+  {% if next %}
+    <input type="hidden" name="next" value="{{ next }}">
+  {% endif %}
+
+  <div class="field">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" value="{{ username or '' }}" required autofocus autocomplete="username">
+  </div>
+
+  <div class="field">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required autocomplete="current-password">
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="button">Log In</button>
+    <a href="{{ url_for('index') }}">Back to Orders</a>
+  </div>
+</form>
+
+{% endblock %}

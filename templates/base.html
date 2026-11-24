@@ -11,6 +11,12 @@
     <nav>
       <a href="{{ url_for('index') }}">Orders</a>
       <a href="{{ url_for('catalog_view') }}">Catalog (Domain Expert)</a>
+      {% if session.get('user') %}
+        <span class="user-badge">Domain Expert: <strong>{{ session.get('user') }}</strong></span>
+        <a href="{{ url_for('logout') }}" class="nav-auth">Log out</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="nav-auth">Log in</a>
+      {% endif %}
     </nav>
   </header>
 
